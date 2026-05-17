@@ -1,0 +1,18 @@
+---
+- name: Set up Auto-Shutdown for Cost Savings
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure the 'at' package is installed
+      apt:
+        name: at
+        state: present
+        update_cache: yes
+
+    - name: Schedule shutdown in {{ lookup('env', 'SHUTDOWN_MINUTES') | default(120) }} minutes
+      shell: "echo 'sudo /sbin/shutdown -h now' | at now + {{ shutdown_time | default(120) }} minutes"
+      register: schedule_output
+
+    - name: Confirm scheduling
+      debug:
+        msg: "The server is scheduled to die in {{ shutdown_time | default(120) }} minutes."

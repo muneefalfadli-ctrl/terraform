@@ -9,3 +9,9 @@ variable "instance_name" {
   type        = string
   default     = "Migration-Server-Variable"
 }
+
+
+variable "shutdown_time" {
+  description = "Minutes to wait before auto-shutdown"
+  default     = "60" # 1 hours
+}
